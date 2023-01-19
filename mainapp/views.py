@@ -15,6 +15,7 @@ class NewsPageView(TemplateView):
         """ Create your own data"""
         context["news_title"] = "A loud news headline"
         context["news_preview"] = "A preliminary description that will interest everyone"
+        context["range"] = range(5)
         return context
 
 
