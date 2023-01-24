@@ -4,7 +4,6 @@ from django.views.generic import TemplateView
 from mainapp import models as mainapp_models
 
 
-# Create your views here.
 class MainPageView(TemplateView):
     template_name = "mainapp/index.html"
 
@@ -13,9 +12,9 @@ class NewsPageView(TemplateView):
     template_name = "mainapp/news.html"
 
     def get_context_data(self, **kwargs):
-        """Get all previous data"""
+        # Get all previous data
         context = super().get_context_data(**kwargs)
-        """ Create your own data"""
+        # Create your own data
         context["news_qs"] = mainapp_models.News.objects.all()[:5]
         return context
 
@@ -26,13 +25,6 @@ class NewsPageDetailView(TemplateView):
     def get_context_data(self, pk=None, **kwargs):
         context = super().get_context_data(pk=pk, **kwargs)
         context["news_object"] = get_object_or_404(mainapp_models.News, pk=pk)
-        return context
-
-
-class NewsWithPaginatorView(NewsPageView):
-    def get_context_data(self, page, **kwargs):
-        context = super().get_context_data(page=page, **kwargs)
-        context["page_num"] = page
         return context
 
 
@@ -50,9 +42,9 @@ class CoursesDetailView(TemplateView):
 
     def get_context_data(self, pk=None, **kwargs):
         context = super(CoursesDetailView, self).get_context_data(**kwargs)
-        context["courses_object"] = get_object_or_404(mainapp_models.Courses, pk=pk)
-        context["lessons"] = mainapp_models.Lesson.objects.filter(course=context["courses_object"])
-        context["teachers"] = mainapp_models.CourseTeachers.objects.filter(course=context["courses_object"])
+        context["course_object"] = get_object_or_404(mainapp_models.Courses, pk=pk)
+        context["lessons"] = mainapp_models.Lesson.objects.filter(course=context["course_object"])
+        context["teachers"] = mainapp_models.CourseTeachers.objects.filter(course=context["course_object"])
         return context
 
 

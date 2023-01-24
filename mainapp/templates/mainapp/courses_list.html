@@ -1,12 +1,15 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block content %}
+{% block title %}
   Курсы
 {% endblock title %}
+
 {% block content %}
 
   <div class="row justify-content-center mt-3">
+
+
     {% for item in objects %}
       <div class="card col-sm-12 col-md-6 col-lg-4 border-0">
         <a href="{% url 'mainapp:courses_detail' pk=item.pk %}">
@@ -17,10 +20,6 @@
         </a>
       </div>
     {% endfor %}
-
-
-
-
 
   </div>
   <div class="row justify-content-center align-items-center mt-3 mb-n3">
@@ -34,9 +33,5 @@
       </ul>
     </nav>
   </div>
-
-
-  </div>
-
 
 {% endblock content %}

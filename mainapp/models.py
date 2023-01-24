@@ -3,7 +3,7 @@ from django.db import models
 
 class News(models.Model):
     title = models.CharField(max_length=256, verbose_name="Title")
-    preamble = models.CharField(max_length=1024, verbose_name="Preamble")
+    preamble = models.CharField(max_length=1024, verbose_name="preamble")
     body = models.TextField(blank=True, null=True, verbose_name="Body")
     body_as_markdown = models.BooleanField(default=False, verbose_name="As markdown")
     created = models.DateTimeField(auto_now_add=True, verbose_name="Created", editable=False)
@@ -18,7 +18,14 @@ class News(models.Model):
         self.save()
 
 
+class CoursesManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().filter(deleted=False)
+
+
 class Courses(models.Model):
+    objects = CoursesManager()
+
     name = models.CharField(max_length=256, verbose_name="Name")
     description = models.TextField(verbose_name="Description", blank=True, null=True)
     description_as_markdown = models.BooleanField(verbose_name="As markdown", default=False)
@@ -53,9 +60,8 @@ class Lesson(models.Model):
         self.deleted = True
         self.save()
 
-
-class Meta:
-    ordering = ("course", "num")
+    class Meta:
+        ordering = ("course", "num")
 
 
 class CourseTeachers(models.Model):
