@@ -3,6 +3,7 @@ from http import HTTPStatus
 
 from django.test import Client, TestCase
 from django.urls import reverse
+from selenium.webdriver.firefox import webdriver
 
 from authapp import models as authapp_models
 from mainapp import models as mainapp_models
@@ -159,7 +160,9 @@ class TestNewsSelenium(StaticLiveServerTestCase):
 
     def setUp(self):
         super().setUp()
-        self.selenium = WebDriver(executable_path=settings.SELENIUM_DRIVER_PATH_FF)
+        profile = webdriver.FirefoxProfile()
+        profile.set_preference("browser.privatebrowsing.autostart", True)
+        self.selenium = WebDriver(firefox_profile=profile, executable_path=settings.SELENIUM_DRIVER_PATH_FF)
         self.selenium.implicitly_wait(10)
         # Login
         self.selenium.get(f"{self.live_server_url}{reverse('authapp:login')}")
